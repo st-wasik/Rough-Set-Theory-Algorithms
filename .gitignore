@@ -1,0 +1,10 @@
+
+\.cabal-sandbox/
+
+dist/build/autogen/
+
+dist/package\.conf\.inplace/
+
+dist/
+
+cabal\.sandbox\.config
