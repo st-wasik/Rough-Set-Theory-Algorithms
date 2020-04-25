@@ -11,7 +11,9 @@ import Data.Maybe
 import Data.List
 
 data ClassApproximation = ClassApproximation 
-    { className :: String
+    { attribsNames :: [String]
+    , decisionAttribName :: String
+    , className :: String
     , lowerApprox :: [InfoObject]
     , upperApprox :: [InfoObject]
     , boundaryRegion :: [InfoObject]
@@ -21,19 +23,24 @@ instance Show ClassApproximation where
     show a = 
         "Approximations for class {"
         ++ className a
-        ++ "}\n"
-        ++ "<Upper approx>:\n"
-        ++ intercalate "\n" (map show $ upperApprox a)
+        ++ "}:\n"
+        ++ ""
+        ++ show (InfoObject.InfoObject (attribsNames a) (decisionAttribName a))
+        ++ ""
+        ++ "\n<Upper approx>:\n"
+        ++ intercalate "\n" (map (("-> "++) . show) $ upperApprox a)
         ++ "\n\n<Boundary region>:\n"
-        ++ intercalate "\n" (map show $ boundaryRegion a)
+        ++ intercalate "\n" (map (("-> "++) . show) $ boundaryRegion a)
         ++ "\n\n<Lower approx>:\n"
-        ++ intercalate "\n" (map show $ lowerApprox a)
+        ++ intercalate "\n" (map (("-> "++) . show) $ lowerApprox a)
 
-approximateClass className classToAttrs attrsToClass = 
-    approximateClass' className attrs attrsToClass [] []
-        where Just attrs = Map.lookup className classToAttrs  
+approximateClass it className classToAttrs attrsToClass = 
+    ClassApproximation (InfoTable.attribsNames it) (InfoTable.decisionAttribName it) className (nub $ lower) (nub $ lower ++ upper) (upper \\ lower)
+        where 
+            Just attrs = Map.lookup className classToAttrs  
+            (lower, upper) = approximateClass' className attrs attrsToClass [] []
 
-approximateClass' className [] _ lower upper = ClassApproximation className (nub $ lower) (nub $ lower ++ upper) (upper \\ lower)
+approximateClass' _ [] _ lower upper = (lower, upper)
 approximateClass' className (a:attrs) attrsToClass lApx uApx =
     approximateClass' className attrs attrsToClass newLAppx newUAppx
     where 
@@ -44,9 +51,11 @@ approximateClass' className (a:attrs) attrsToClass lApx uApx =
 
 
 
-approximate it = approximateClass "-" a b
-    where (a, b) = buildApproxMaps it
-
+approximate it = result
+    where 
+        (a, b) = buildApproxMaps it
+        classes = nub $ Map.keys a
+        result = map (\cls -> approximateClass it cls a b) classes
 
 
 buildApproxMaps :: InfoTable -> (Map String [[String]], Map [String] [String]) 
