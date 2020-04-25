@@ -8,6 +8,7 @@ import Data.String.Utils
 
 import RoughSetTheory.InfoTable
 import RoughSetTheory.InfoObject
+import RoughSetTheory.Approximation
 
 import Text.Pretty.Simple
 
@@ -27,4 +28,5 @@ main =
     loadDataFromCsv file
     >>= \a -> case a of 
         Left e  -> pPrint e
-        Right x -> pPrint $ fromLists x    
+        Right x -> pPrint . approximate $ fromLists x
+        --Right x -> let (a,b)=approximate $ fromLists x in pPrint a >> putStrLn "" >> pPrint b   

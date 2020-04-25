@@ -57,7 +57,7 @@ library
   -- other-extensions:    
   
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.9 && <4.10, split, MissingH, parsec, pretty-simple
+  build-depends:       base >=4.9 && <4.10, split, MissingH, parsec, pretty-simple, containers
   
   -- Directories containing source files.
   -- hs-source-dirs:      

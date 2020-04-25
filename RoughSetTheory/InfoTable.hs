@@ -8,7 +8,7 @@ data InfoTable = InfoTable
     { attribsNames :: [String]
     , decisionAttribName :: String
     , attribs      :: [InfoObject]
-    }
+    } deriving (Eq, Ord)
 
 instance Show InfoTable where 
     show it = 
