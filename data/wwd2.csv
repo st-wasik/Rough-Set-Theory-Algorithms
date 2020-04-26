@@ -1,0 +1,11 @@
+name, moc, koszt, bezp., klasa
+BEL, L, H, M, BAD
+NED, L, H, L, BAD
+LUX, L, M, L, BAD
+AUT, L, M, L, AVE
+GER, H, H, M, AVE
+ITA, M, M, M, AVE
+FRA, H, M, H, GOOD
+SWE, M, M, H, GOOD
+NOR, M, L, M, GOOD
+FIN, M, L, M, GOOD

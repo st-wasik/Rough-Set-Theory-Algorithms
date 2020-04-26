@@ -1,9 +1,9 @@
-height, hair, eyes, attractive
-short, blond, blue,  +
-tall,  blond, brown, -
-tall,  red,   blue,  +
-short, dark,  blue,  -
-tall,  dark,  blue,  -
-tall,  blond, blue,  +
-tall,  dark,  brown, -
-short, blond, brown, -
+name, height, hair, eyes, attractive
+1, short, blond, blue,  +
+2, tall,  blond, brown, -
+3, tall,  red,   blue,  +
+4, short, dark,  blue,  -
+5, tall,  dark,  blue,  -
+6, tall,  blond, blue,  +
+7, tall,  dark,  brown, -
+8, short, blond, brown, -

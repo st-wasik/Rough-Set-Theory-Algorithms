@@ -16,26 +16,29 @@ data ClassApproximation = ClassApproximation
     , className :: String
     , lowerApprox :: [InfoObject]
     , upperApprox :: [InfoObject]
-    , boundaryRegion :: [InfoObject]
+    -- , boundaryRegion :: [InfoObject]
     } 
 
 instance Show ClassApproximation where 
     show a = 
-        "Approximations for class {"
+        "\n\nApproximations for class {"
         ++ className a
-        ++ "}:\n"
+        ++ "} with attribs {"
         ++ ""
-        ++ show (InfoObject.InfoObject (attribsNames a) (decisionAttribName a))
+        ++ intercalate " " (attribsNames a)
+        ++ " => "
+        ++ decisionAttribName a
+        ++ "}"
+        ++ "\n<Upper approx.>:\n"
+        ++ intercalate "\n" (map (("  -> "++) . show) $ upperApprox a)
+        -- ++ "\n\n<Boundary region>:\n"
+        -- ++ intercalate "\n" (map (("-> "++) . show) $ boundaryRegion a)
+        ++ "\n\n<Lower approx.>:\n"
+        ++ intercalate "\n" (map (("  -> "++) . show) $ lowerApprox a)
         ++ ""
-        ++ "\n<Upper approx>:\n"
-        ++ intercalate "\n" (map (("-> "++) . show) $ upperApprox a)
-        ++ "\n\n<Boundary region>:\n"
-        ++ intercalate "\n" (map (("-> "++) . show) $ boundaryRegion a)
-        ++ "\n\n<Lower approx>:\n"
-        ++ intercalate "\n" (map (("-> "++) . show) $ lowerApprox a)
 
 approximateClass it className classToAttrs attrsToClass = 
-    ClassApproximation (InfoTable.attribsNames it) (InfoTable.decisionAttribName it) className (nub $ lower) (nub $ lower ++ upper) (upper \\ lower)
+    ClassApproximation (InfoTable.attribsNames it) (InfoTable.decisionAttribName it) className (nub $ lower) (nub $ lower ++ upper) --(nub $ upper \\ lower)
         where 
             Just attrs = Map.lookup className classToAttrs  
             (lower, upper) = approximateClass' className attrs attrsToClass [] []
@@ -44,10 +47,10 @@ approximateClass' _ [] _ lower upper = (lower, upper)
 approximateClass' className (a:attrs) attrsToClass lApx uApx =
     approximateClass' className attrs attrsToClass newLAppx newUAppx
     where 
-        Just classesForAttrs = Map.lookup a attrsToClass  
-        (newLAppx, newUAppx) = if all (==className) classesForAttrs
-            then (lApx ++ [InfoObject.InfoObject a className], uApx)
-            else (lApx, uApx ++ [InfoObject.InfoObject a className])
+        Just classesForAttrs = Map.lookup (InfoObject.attribs a) attrsToClass  
+        (newLAppx, newUAppx) = if all (\d -> (InfoObject.decision d) == className) classesForAttrs
+            then (lApx ++ [a], uApx)
+            else (lApx, uApx ++ classesForAttrs)
 
 
 
@@ -58,7 +61,7 @@ approximate it = result
         result = map (\cls -> approximateClass it cls a b) classes
 
 
-buildApproxMaps :: InfoTable -> (Map String [[String]], Map [String] [String]) 
+buildApproxMaps :: InfoTable -> (Map String [InfoObject], Map [String] [InfoObject]) 
 buildApproxMaps it = buildApproxMaps' (InfoTable.attribs it) Map.empty Map.empty
 
 buildApproxMaps' [] classToAttrs attrsToClass = (classToAttrs, attrsToClass)
@@ -67,8 +70,8 @@ buildApproxMaps' (x:xs) classToAttrs attrsToClass =
     where 
         dec   = InfoObject.decision x
         attrs = InfoObject.attribs  x 
-        newClassToAttrs = Map.insertWith' (++) dec [attrs] classToAttrs 
-        newAttrsToClass = Map.insertWith' (++) attrs [dec] attrsToClass
+        newClassToAttrs = Map.insertWith' (++) dec [x] classToAttrs 
+        newAttrsToClass = Map.insertWith' (++) attrs [x] attrsToClass
 
 same [] = True
 same [_] = True
