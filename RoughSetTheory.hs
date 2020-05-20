@@ -7,8 +7,10 @@ import Data.CSV
 import Data.String.Utils
 
 import RoughSetTheory.InfoTable
-import RoughSetTheory.InfoObject
+import RoughSetTheory.Variant
 import RoughSetTheory.Approximation
+import RoughSetTheory.LEM2
+import RoughSetTheory.Rule
 
 import Text.Pretty.Simple
 
@@ -16,6 +18,9 @@ file = "data/girls.csv"
 file2 = "data/wd4.csv"
 file3 = "data/monk.csv"
 file4 = "data/wwd2.csv"
+file5 = "data/wwd11.csv"
+file6 = "data/test.csv"
+file7 = "data/flu.csv"
 
 --loadDataFromCsv :: String -> IO [[String]]
 loadDataFromCsv path = 
@@ -27,7 +32,7 @@ readDouble = read
 
 main :: IO ()
 main = 
-    loadDataFromCsv file4
+    loadDataFromCsv file7
     >>= \a -> case a of 
         Left e  -> pPrint e
         Right x -> do 

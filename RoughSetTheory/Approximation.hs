@@ -4,8 +4,8 @@ import Data.Map(Map)
 
 import qualified RoughSetTheory.InfoTable as InfoTable
 import RoughSetTheory.InfoTable(InfoTable)
-import qualified RoughSetTheory.InfoObject as InfoObject
-import RoughSetTheory.InfoObject(InfoObject)
+import qualified RoughSetTheory.Variant as Variant
+import RoughSetTheory.Variant(Variant)
 
 import Data.Maybe
 import Data.List
@@ -14,16 +14,16 @@ data ClassApproximation = ClassApproximation
     { attribsNames :: [String]
     , decisionAttribName :: String
     , className :: String
-    , lowerApprox :: [InfoObject]
-    , upperApprox :: [InfoObject]
-    -- , boundaryRegion :: [InfoObject]
+    , lowerApprox :: [Variant]
+    , upperApprox :: [Variant]
+    -- , boundaryRegion :: [Variant]
     } 
 
 instance Show ClassApproximation where 
     show a = 
         "\n\nApproximations for class {"
         ++ className a
-        ++ "} with attribs {"
+        ++ "} with attributes {"
         ++ ""
         ++ intercalate " " (attribsNames a)
         ++ " => "
@@ -47,10 +47,10 @@ approximateClass' _ [] _ lower upper = (lower, upper)
 approximateClass' className (a:attrs) attrsToClass lApx uApx =
     approximateClass' className attrs attrsToClass newLAppx newUAppx
     where 
-        Just classesForAttrs = Map.lookup (InfoObject.attribs a) attrsToClass  
-        (newLAppx, newUAppx) = if all (\d -> (InfoObject.decision d) == className) classesForAttrs
-            then (lApx ++ [a], uApx)
-            else (lApx, uApx ++ classesForAttrs)
+        Just classesForAttrs = Map.lookup (Variant.attribs a) attrsToClass  
+        (newLAppx, newUAppx) = if all (\d -> (Variant.decision d) == className) classesForAttrs
+            then (a:lApx, uApx)
+            else (lApx, (reverse classesForAttrs) ++ uApx)
 
 
 
@@ -61,15 +61,15 @@ approximate it = result
         result = map (\cls -> approximateClass it cls a b) classes
 
 
-buildApproxMaps :: InfoTable -> (Map String [InfoObject], Map [String] [InfoObject]) 
+buildApproxMaps :: InfoTable -> (Map String [Variant], Map [String] [Variant]) 
 buildApproxMaps it = buildApproxMaps' (InfoTable.attribs it) Map.empty Map.empty
 
 buildApproxMaps' [] classToAttrs attrsToClass = (classToAttrs, attrsToClass)
 buildApproxMaps' (x:xs) classToAttrs attrsToClass = 
     buildApproxMaps' xs newClassToAttrs newAttrsToClass
     where 
-        dec   = InfoObject.decision x
-        attrs = InfoObject.attribs  x 
+        dec   = Variant.decision x
+        attrs = Variant.attribs  x 
         newClassToAttrs = Map.insertWith' (++) dec [x] classToAttrs 
         newAttrsToClass = Map.insertWith' (++) attrs [x] attrsToClass
 
