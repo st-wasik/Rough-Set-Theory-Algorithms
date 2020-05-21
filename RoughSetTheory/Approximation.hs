@@ -34,7 +34,7 @@ instance Show ClassApproximation where
         -- ++ "\n\n<Boundary region>:\n"
         -- ++ intercalate "\n" (map (("-> "++) . show) $ boundaryRegion a)
         ++ "\n\n<Lower approx.>:\n"
-        ++ intercalate "\n" (map (("  -> "++) . show) $ lowerApprox a)
+        ++ intercalate "\n" (map (("  -> " ++) . show) $ lowerApprox a)
         ++ ""
 
 approximateClass it className classToAttrs attrsToClass = 

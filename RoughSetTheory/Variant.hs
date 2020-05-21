@@ -9,7 +9,7 @@ data Variant = Variant
     } deriving (Eq, Ord)
 
 instance Show Variant where
-    show io = "{" ++ (let n = name io in if n == "" then "" else n ++ ": ") ++ (intercalate " " $ attribs io) ++ " => " ++ (decision io) ++ "}"
+    show io = "{" ++ (let n = name io in if n == "" then "" else n ++ ": ") ++ (intercalate " " $ (fmap (\a -> take 10 $ a ++ (repeat ' ')) $ attribs io)) ++ " => " ++ (decision io) ++ "}"
     --show io = "{" ++ name io ++ "}"
     
 fromList :: [String] -> Variant

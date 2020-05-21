@@ -8,9 +8,10 @@ import Data.String.Utils
 
 import RoughSetTheory.InfoTable
 import RoughSetTheory.Variant
-import RoughSetTheory.Approximation
+import RoughSetTheory.Approximation as Approximation
 import RoughSetTheory.LEM2
 import RoughSetTheory.Rule
+
 
 import Text.Pretty.Simple
 
@@ -39,4 +40,6 @@ main =
             let it = fromLists x
             print it
             print . approximate $ it
+            putStrLn " "
+            mapM_ print . concat . fmap (lem2 it . Approximation.lowerApprox) . approximate $ it
         --Right x -> let (a,b)=approximate $ fromLists x in pPrint a >> putStrLn "" >> pPrint b
