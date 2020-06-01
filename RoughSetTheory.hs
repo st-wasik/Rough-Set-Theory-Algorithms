@@ -6,7 +6,7 @@ import Data.CSV
 
 import Data.String.Utils
 
-import RoughSetTheory.InfoTable
+import RoughSetTheory.InfoTable as InfoTable
 import RoughSetTheory.Variant
 import RoughSetTheory.Approximation as Approximation
 import RoughSetTheory.LEM2
@@ -33,13 +33,16 @@ readDouble = read
 
 main :: IO ()
 main = 
-    loadDataFromCsv file7
-    >>= \a -> case a of 
-        Left e  -> pPrint e
-        Right x -> do 
-            let it = fromLists x
-            print it
-            print . approximate $ it
-            putStrLn " "
-            mapM_ print . concat . fmap (lem2 it . Approximation.lowerApprox) . approximate $ it
-        --Right x -> let (a,b)=approximate $ fromLists x in pPrint a >> putStrLn "" >> pPrint b
+    loadDataFromCsv file4
+    >>= exec
+    where 
+        exec a = case a of
+            Left e  -> pPrint e
+            Right x -> do 
+                let it = fromLists x
+                return ()
+                print it
+                print . approximate $ it
+                putStrLn " "
+                mapM_ print . concatMap (lem2 (InfoTable.attribs it) . Approximation.boundary) . approximate $ it
+            --Right x -> let (a,b)=approximate $ fromLists x in pPrint a >> putStrLn "" >> pPrint b

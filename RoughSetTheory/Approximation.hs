@@ -1,11 +1,13 @@
 module RoughSetTheory.Approximation where 
-import qualified Data.Map as Map
-import Data.Map(Map)
+import qualified Data.Map.Strict as Map
+import Data.Map.Strict(Map)
 
 import qualified RoughSetTheory.InfoTable as InfoTable
 import RoughSetTheory.InfoTable(InfoTable)
 import qualified RoughSetTheory.Variant as Variant
 import RoughSetTheory.Variant(Variant)
+
+import RoughSetTheory.LEM2
 
 import Data.Maybe
 import Data.List
@@ -16,29 +18,44 @@ data ClassApproximation = ClassApproximation
     , className :: String
     , lowerApprox :: [Variant]
     , upperApprox :: [Variant]
+    , infoTable :: InfoTable
     -- , boundaryRegion :: [Variant]
     } 
 
+boundary :: ClassApproximation -> [Variant]
+boundary apx = upperApprox apx \\ lowerApprox apx 
+
 instance Show ClassApproximation where 
     show a = 
-        "\n\nApproximations for class {"
+        "\n\nApproximations and rules for class {"
         ++ className a
-        ++ "} with attributes {"
-        ++ ""
-        ++ intercalate " " (attribsNames a)
+        ++ "}"
+        ++ "\n<Upper approx.>:\n  "
+        ++ "   {"
+        ++ (if Variant.name (head (lowerApprox a ++ upperApprox a)) /= "" then "id " else "")
+        ++ intercalate " " (attribsNames a) 
         ++ " => "
         ++ decisionAttribName a
-        ++ "}"
-        ++ "\n<Upper approx.>:\n"
+        ++ "}\n"
         ++ intercalate "\n" (map (("  -> "++) . show) $ upperApprox a)
+        ++ "\n<Upper approx. rules>:\n  "
+        -- ++ intercalate "\n  " ( fmap show (lem2 (infoTable a) (upperApprox a) ))
         -- ++ "\n\n<Boundary region>:\n"
         -- ++ intercalate "\n" (map (("-> "++) . show) $ boundaryRegion a)
-        ++ "\n\n<Lower approx.>:\n"
+        ++ "\n\n<Lower approx.>:\n  "
+        ++ "   {"
+        ++ (if Variant.name (head (lowerApprox a ++ upperApprox a)) /= "" then "id  " else "")
+        ++ intercalate " " (attribsNames a) 
+        ++ " => "
+        ++ decisionAttribName a
+        ++ "}\n"
         ++ intercalate "\n" (map (("  -> " ++) . show) $ lowerApprox a)
+        ++ "\n<Lower approx. rules>:\n  "
+        -- ++ intercalate "\n  " ( fmap show (lem2 (infoTable a) (lowerApprox a) ))
         ++ ""
 
 approximateClass it className classToAttrs attrsToClass = 
-    ClassApproximation (InfoTable.attribsNames it) (InfoTable.decisionAttribName it) className (nub $ lower) (nub $ lower ++ upper) --(nub $ upper \\ lower)
+    ClassApproximation (InfoTable.attribsNames it) (InfoTable.decisionAttribName it) className (nub lower) (nub $ lower ++ upper) it --(nub $ upper \\ lower)
         where 
             Just attrs = Map.lookup className classToAttrs  
             (lower, upper) = approximateClass' className attrs attrsToClass [] []
@@ -52,9 +69,7 @@ approximateClass' className (a:attrs) attrsToClass lApx uApx =
             then (a:lApx, uApx)
             else (lApx, (reverse classesForAttrs) ++ uApx)
 
-
-
-approximate it = result
+approximate it = reverse result
     where 
         (a, b) = buildApproxMaps it
         classes = nub $ Map.keys a
@@ -70,8 +85,8 @@ buildApproxMaps' (x:xs) classToAttrs attrsToClass =
     where 
         dec   = Variant.decision x
         attrs = Variant.attribs  x 
-        newClassToAttrs = Map.insertWith' (++) dec [x] classToAttrs 
-        newAttrsToClass = Map.insertWith' (++) attrs [x] attrsToClass
+        newClassToAttrs = Map.insertWith (++) dec [x] classToAttrs 
+        newAttrsToClass = Map.insertWith (++) attrs [x] attrsToClass
 
 same [] = True
 same [_] = True

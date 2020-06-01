@@ -11,8 +11,8 @@ data Rule =
         } deriving Eq
 
 instance Show Rule where 
-    show rule = "if " ++ conds ++ " then " ++ dec 
+    show rule = "IF " ++ conds ++ " THEN " ++ dec 
         where 
-            conds = intercalate " and " $ foldl _concat [] $ conditions rule
-            dec = intercalate " or " $ foldl _concat [] $ decision rule
+            conds = intercalate " AND " $ foldl _concat [] $ conditions rule
+            dec = intercalate " OR " $ foldl _concat [] $ decision rule
             _concat acc (a, v) = acc ++ [a ++ "=" ++ v]

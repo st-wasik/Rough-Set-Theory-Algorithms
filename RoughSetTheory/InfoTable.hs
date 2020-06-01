@@ -13,9 +13,9 @@ data InfoTable = InfoTable
 instance Show InfoTable where 
     show it = 
         "{" 
-        ++ (intercalate " " $ attribsNames it) 
+        ++ unwords (attribsNames it)
         ++ " => " 
-        ++ (decisionAttribName it) 
+        ++ decisionAttribName it
         ++ "}\n"
         ++ intercalate "\n" (map show $ attribs it)
 
@@ -25,4 +25,4 @@ fromLists input = InfoTable attrNames decisionAttrName attrsValues
         allAttrNames = head input
         attrNames = let n = init allAttrNames in if head n == "name" then tail n else n
         decisionAttrName = last allAttrNames 
-        attrsValues = map (let n = init allAttrNames in if head n == "name" then Variant.fromListWithName  else Variant.fromList) $ drop 1 input
+        attrsValues = map (let n = init allAttrNames in if head n == "name" then Variant.fromListWithName allAttrNames else Variant.fromList allAttrNames) $ drop 1 input
