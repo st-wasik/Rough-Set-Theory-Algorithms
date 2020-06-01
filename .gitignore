@@ -8,3 +8,9 @@ dist/package\.conf\.inplace/
 dist/
 
 cabal\.sandbox\.config
+
+\.stack-work
+
+\.vscode
+
+\dist-newstyle
