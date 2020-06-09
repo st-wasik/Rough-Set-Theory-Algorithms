@@ -51,7 +51,7 @@ library
   exposed-modules:    RoughSetTheory     
   
   -- Modules included in this library but not exported.
-  other-modules:  Distinct, RoughSetTheory.Approximation, RoughSetTheory.InfoTable, RoughSetTheory.LEM2, RoughSetTheory.Rule, RoughSetTheory.Variant       
+  other-modules:  Distinct, RoughSetTheory.Approximation, RoughSetTheory.InfoTable, RoughSetTheory.LEM2, RoughSetTheory.Rule, RoughSetTheory.Variant, RoughSetTheory.Reduct       
   
   -- LANGUAGE extensions used by modules in this package.
   -- other-extensions:    

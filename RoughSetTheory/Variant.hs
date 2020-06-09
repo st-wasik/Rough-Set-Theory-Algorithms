@@ -35,3 +35,17 @@ toDecCondition v = (decisionName v, decision v)
 
 toConditions :: Variant -> [Condition]
 toConditions v = toAttrConditions v ++ [toDecCondition v]
+
+dropAttrib :: String -> Variant -> Variant
+dropAttrib attr v = result
+    where 
+        index = elemIndex attr (attribsNames v)
+        result = case index of
+            Nothing  -> v
+            Just idx -> let 
+                newAttrs = dropNth idx $ attribs v
+                newAttrNames = filter (/= attr) $ attribsNames v
+                in Variant (name v) newAttrs newAttrNames (decision v) (decisionName v)
+
+dropNth :: Int -> [a] -> [a]
+dropNth n list = take n list ++ drop (n+1) list

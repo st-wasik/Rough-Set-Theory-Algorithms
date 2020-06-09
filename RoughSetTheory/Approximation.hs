@@ -19,7 +19,6 @@ data ClassApproximation = ClassApproximation
     , lowerApprox :: [Variant]
     , upperApprox :: [Variant]
     , infoTable :: InfoTable
-    -- , boundaryRegion :: [Variant]
     } 
 
 boundary :: ClassApproximation -> [Variant]
@@ -65,9 +64,10 @@ approximateClass' className (a:attrs) attrsToClass lApx uApx =
     approximateClass' className attrs attrsToClass newLAppx newUAppx
     where 
         Just classesForAttrs = Map.lookup (Variant.attribs a) attrsToClass  
-        (newLAppx, newUAppx) = if all (\d -> (Variant.decision d) == className) classesForAttrs
+        (newLAppx, newUAppx) = if all (\d -> Variant.decision d == className) classesForAttrs
             then (a:lApx, uApx)
-            else (lApx, (reverse classesForAttrs) ++ uApx)
+            else (lApx, reverse classesForAttrs ++ uApx)
+
 
 approximate it = reverse result
     where 

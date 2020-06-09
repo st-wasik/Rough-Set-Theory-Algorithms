@@ -11,7 +11,9 @@ import RoughSetTheory.Variant
 import RoughSetTheory.Approximation as Approximation
 import RoughSetTheory.LEM2
 import RoughSetTheory.Rule
+import RoughSetTheory.Reduct
 
+import qualified Data.List as List
 
 import Text.Pretty.Simple
 
@@ -22,6 +24,7 @@ file4 = "data/wwd2.csv"
 file5 = "data/wwd11.csv"
 file6 = "data/test.csv"
 file7 = "data/flu.csv"
+file8 = "data/wwd11_red.csv"
 
 --loadDataFromCsv :: String -> IO [[String]]
 loadDataFromCsv path = 
@@ -33,7 +36,7 @@ readDouble = read
 
 main :: IO ()
 main = 
-    loadDataFromCsv file4
+    loadDataFromCsv file8
     >>= exec
     where 
         exec a = case a of
@@ -42,7 +45,11 @@ main =
                 let it = fromLists x
                 return ()
                 print it
-                print . approximate $ it
+                -- print . approximate $ it
                 putStrLn " "
-                mapM_ print . concatMap (lem2 (InfoTable.attribs it) . Approximation.boundary) . approximate $ it
+                -- print . classificationQuality . approximate $ it
+                print $ core $ findReducts it
+                -- print $ List.groupBy (\a b -> List.length a == List.length b) . subsets $ InfoTable.attribsNames it
+                -- print $ InfoTable.takeAttribs ["bezp."] it
+                -- mapM_ print . concatMap (lem2 (InfoTable.attribs it) . Approximation.boundary) . approximate $ it
             --Right x -> let (a,b)=approximate $ fromLists x in pPrint a >> putStrLn "" >> pPrint b

@@ -4,6 +4,8 @@ import RoughSetTheory.Variant (Variant)
 
 import Data.List
 
+import Control.Applicative
+
 data InfoTable = InfoTable
     { attribsNames :: [String]
     , decisionAttribName :: String
@@ -18,6 +20,21 @@ instance Show InfoTable where
         ++ decisionAttribName it
         ++ "}\n"
         ++ intercalate "\n" (map show $ attribs it)
+
+dropAttribs :: [String] -> InfoTable -> InfoTable
+dropAttribs [] it = it 
+dropAttribs (a:attrs) it = dropAttribs attrs $ dropAttrib a it
+
+dropAttrib :: String -> InfoTable -> InfoTable
+dropAttrib attr it = InfoTable newAttrN (decisionAttribName it) newAttribs
+    where 
+        newAttrN   = filter (/= attr) $ attribsNames it
+        newAttribs = Variant.dropAttrib attr <$> attribs it
+
+takeAttribs :: [String] -> InfoTable -> InfoTable
+takeAttribs attrs it = dropAttribs newAttrs it
+    where
+        newAttrs = attribsNames it \\ attrs
 
 fromLists :: [[String]] -> InfoTable
 fromLists input = InfoTable attrNames decisionAttrName attrsValues
