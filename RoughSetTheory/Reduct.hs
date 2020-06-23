@@ -1,4 +1,9 @@
-module RoughSetTheory.Reduct where 
+module RoughSetTheory.Reduct
+    ( findReducts
+    , core
+    , showReducts
+    , showCore
+    ) where 
 
 import qualified Data.Ratio as Ratio
 import qualified Data.List as List
@@ -9,6 +14,14 @@ import qualified RoughSetTheory.InfoTable as InfoTable
 import RoughSetTheory.InfoTable(InfoTable)
 
 import Debug.Trace as Debug
+
+showReducts :: [[String]] -> String
+showReducts reducts = List.unwords $ f <$> reducts
+    where 
+        f r = "{" ++ List.unwords r ++ "}"
+
+showCore :: [String] -> String
+showCore red = "{" ++ List.unwords red ++ "}"
 
 classificationQuality :: [ClassApproximation] -> Ratio Int
 classificationQuality approxs = (all - bound) Ratio.% all

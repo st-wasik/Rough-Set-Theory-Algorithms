@@ -27,6 +27,12 @@ fromList atrNames input = Variant "" (init input) (init atrNames) (last input) (
 fromListWithName :: [String] -> [String] -> Variant
 fromListWithName atrNames input = Variant (head input) (init . tail $ input) (init . tail $ atrNames) (last input) (last atrNames)
 
+unclassifiedFromList :: [String] -> [String] -> Variant
+unclassifiedFromList atrNames input = Variant "" input atrNames "" ""
+
+unclassifiedFromListWithName :: [String] -> [String] -> Variant
+unclassifiedFromListWithName atrNames input = Variant (head input) (tail input) (tail atrNames) "" ""
+
 toAttrConditions :: Variant -> [Condition]
 toAttrConditions v = zip (attribsNames v) (attribs v)
 
@@ -49,3 +55,6 @@ dropAttrib attr v = result
 
 dropNth :: Int -> [a] -> [a]
 dropNth n list = take n list ++ drop (n+1) list
+
+setDecisionAndDName :: Variant -> String -> String -> Variant
+setDecisionAndDName (Variant a b c _ _) = Variant a b c

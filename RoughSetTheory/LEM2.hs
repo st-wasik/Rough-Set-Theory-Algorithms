@@ -1,4 +1,7 @@
-module RoughSetTheory.LEM2 where
+module RoughSetTheory.LEM2
+    ( lem2
+    , dropUnnecessaryRules
+    ) where
 
 import qualified RoughSetTheory.Variant as Variant
 import RoughSetTheory.Variant (Variant, Condition)
