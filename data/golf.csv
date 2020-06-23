@@ -1,0 +1,15 @@
+name, outlook, temperature, humidity, windy, decision
+A, sunny, 85, 85, false, Don't Play
+B, sunny, 80, 90, true, Don't Play
+C, overcast, 83, 78, false, Play
+D, rain, 70, 96, false, Play
+E, rain, 68, 80, false, Play
+F, rain, 65, 70, true, Don't Play
+G, overcast, 64, 65, true, Play
+H, sunny, 72, 95, false, Don't Play
+I, sunny, 69, 70, false, Play
+J, rain, 75, 80, false, Play
+K, sunny, 75, 70, true, Play
+L, overcast, 72, 90, true, Play
+M, overcast, 81, 75, false, Play
+N, rain, 71, 80, true, Don't Play
