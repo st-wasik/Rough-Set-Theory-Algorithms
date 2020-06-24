@@ -1,4 +1,4 @@
 name, outlook, temperature, humidity, windy
 TestA, sunny, 85, 85, false
 TestB, overcast, 12, 45, true
-
+TestC, rain, 44, 63, false

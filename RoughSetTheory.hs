@@ -32,6 +32,7 @@ file8 = "data/wwd11_red.csv"
 file9 = "data/golf.csv"
 mushrooms = "data/mushrooms2.csv"
 
+test0 = "data/test.csv"
 test1 = "data/girls_test.csv"
 test2 = "data/golf_test.csv"
 
@@ -74,7 +75,8 @@ lem2Example = do
         Right x -> do
             let it = InfoTable.fromLists x
             let approx = approxLevel <$> Approximation.approximate it
-            let rules  = concatMap (LEM2.lem2 (InfoTable.variants it)) approx
+            let allRules = concatMap (LEM2.lem2 (InfoTable.variants it)) approx
+            let rules = LEM2.dropUnnecessaryRules allRules (InfoTable.variants it)
             mapM_ print rules
 
 reductExample :: IO ()
@@ -100,6 +102,9 @@ classifyExample = do
             Right y -> do
                 let it = InfoTable.fromLists x
                 let approx = approxLevel <$> Approximation.approximate it
-                let rules  = concatMap (LEM2.lem2 (InfoTable.variants it)) approx
+                let allRules = concatMap (LEM2.lem2 (InfoTable.variants it)) approx
+                let rules =  LEM2.dropUnnecessaryRules allRules (InfoTable.variants it)
                 let test = let it = InfoTable.unclassifiedFromLists y in InfoTable.variants it
+                mapM_ print test
+                putStrLn ""
                 mapM_ print $ concatMap (Classify.classifyVariant rules) test

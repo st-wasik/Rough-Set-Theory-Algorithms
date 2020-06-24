@@ -15,13 +15,22 @@ import RoughSetTheory.InfoTable (InfoTable)
 
 import Distinct
 
+dropUnnecessaryRules :: [Rule] -> [Variant] -> [Rule]
+dropUnnecessaryRules [] _ = []
+dropUnnecessaryRules (r:rs) variants = if List.null coveredVariants 
+    then dropUnnecessaryRules rs variants
+    else r : dropUnnecessaryRules rs newVariants
+    where 
+        coveredVariants = variantsForConditions (Rule.conditions r) variants
+        newVariants = variants List.\\ coveredVariants
+
 conditionsOf :: [Variant] -> [Variant.Condition]
 conditionsOf x = List.nub $ concatMap Variant.toAttrConditions x
 
 lem2 :: [Variant] -> [Variant] -> [Rule]
 lem2 _U _X = let 
     rules = lem2_1st_loop _X _X _U []
-    newRules = dropUnnecessaryRules rules _X _U
+    newRules = dropUnnecessaryRulesCond rules _X _U
     in makeRules newRules _U
 
 makeRules :: [[Condition]] -> [Variant] -> [Rule]
@@ -84,14 +93,14 @@ dropUnnecessaryConds' (t:_T) _X _U acc
     | variantsForConditions (acc ++ _T) _U `allIn` _X = dropUnnecessaryConds' _T _X _U acc
     | otherwise = dropUnnecessaryConds' _T _X _U (acc ++ [t])
 
-dropUnnecessaryRules :: [[Condition]] -> [Variant] -> [Variant] -> [[Condition]]
-dropUnnecessaryRules rules _X _U = dropUnnecessaryRules' rules (List.sort $ List.nub _X) _U []
+dropUnnecessaryRulesCond :: [[Condition]] -> [Variant] -> [Variant] -> [[Condition]]
+dropUnnecessaryRulesCond rules _X _U = dropUnnecessaryRulesCond' rules (List.sort $ List.nub _X) _U []
 
-dropUnnecessaryRules' :: [[Condition]] -> [Variant] -> [Variant] -> [[Condition]] -> [[Condition]]
-dropUnnecessaryRules' [] _ _ acc = acc
-dropUnnecessaryRules' (r:rules) _X _U acc
-    | coveredVariants == _X = dropUnnecessaryRules' rules _X _U acc
-    | otherwise = dropUnnecessaryRules' rules _X _U (acc ++ [r])
+dropUnnecessaryRulesCond' :: [[Condition]] -> [Variant] -> [Variant] -> [[Condition]] -> [[Condition]]
+dropUnnecessaryRulesCond' [] _ _ acc = acc
+dropUnnecessaryRulesCond' (r:rules) _X _U acc
+    | coveredVariants == _X = dropUnnecessaryRulesCond' rules _X _U acc
+    | otherwise = dropUnnecessaryRulesCond' rules _X _U (acc ++ [r])
     where coveredVariants = List.sort . List.nub $ concatMap (`variantsForConditions` _U) (acc ++ rules)
 
 variantsForConditions :: [Condition] -> [Variant] -> [Variant]

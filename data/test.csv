@@ -1,2 +1,4 @@
-name, height, hair, eyes, attractive
-9, short, blond, brown
+name, g1, g2
+TEST1, M, 2
+TEST2, G, 7
+TEST3, A, 2
