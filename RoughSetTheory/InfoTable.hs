@@ -1,9 +1,9 @@
 module RoughSetTheory.InfoTable where
+
 import qualified RoughSetTheory.Variant as Variant
 import RoughSetTheory.Variant (Variant)
 
 import Data.List as List
-
 import Control.Applicative
 
 data InfoTable = InfoTable

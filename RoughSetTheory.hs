@@ -23,8 +23,6 @@ import qualified RoughSetTheory.Rule          as Rule
 import qualified RoughSetTheory.Reduct        as Reduct
 import qualified RoughSetTheory.Classify      as Classify
 
-import Text.Pretty.Simple
-
 file1 = "data/girls.csv"
 file2 = "data/wd4.csv"
 file3 = "data/monk.csv"
