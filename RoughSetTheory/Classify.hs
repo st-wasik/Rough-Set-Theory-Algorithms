@@ -35,8 +35,14 @@ allIn :: Eq a => [a] -> [a] -> Bool
 allIn a b = all (==True) $ map (`List.elem` b) a 
 
 classifyNotFullMatch :: [Rule] -> [Condition] -> [String]
-classifyNotFullMatch rules attribs = if List.null covered then [] else snd (head covered) 
-    where covered = List.sortBy (\a b -> compare (fst b) (fst a)) . filter (\a -> 0 < fst a) . map (`conditionCoverage` attribs) $ rules
+classifyNotFullMatch rules attribs = result
+    where 
+        covered = List.sortBy (\a b -> compare (fst b) (fst a)) . filter (\a -> 0 < fst a) . map (`conditionCoverage` attribs) $ rules
+        result = if List.null covered 
+            then [] 
+            else 
+                let maxVal = fst (head covered) 
+                in List.nub . concatMap snd . filter ((==) maxVal . fst) $ covered
 
 conditionCoverage :: Rule -> [Condition] -> (Ratio Int, [String]) 
 conditionCoverage r attribs = (List.length covered Ratio.% List.length ruleConds, decision) 
