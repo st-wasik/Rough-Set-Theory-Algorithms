@@ -8,12 +8,12 @@ module RoughSetTheory.Reduct
 import qualified Data.Ratio as Ratio
 import qualified Data.List as List
 import Data.Ratio(Ratio)
+
 import qualified RoughSetTheory.Approximation as Approx 
 import RoughSetTheory.Approximation(ClassApproximation)
+
 import qualified RoughSetTheory.InfoTable as InfoTable
 import RoughSetTheory.InfoTable(InfoTable)
-
-import Debug.Trace as Debug
 
 showReducts :: [[String]] -> String
 showReducts reducts = List.unwords $ f <$> reducts

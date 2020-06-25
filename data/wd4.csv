@@ -1,10 +1,10 @@
-Temperatura, Hemoglobina, Ciśnienie, Samopoczucie
-Niska, Dobra, Niskie, Słabe
-Niska, Dobra, Normalne, Słabe
-Normalna, B.Dobra, Niskie, Słabe
-Normalna, B.Dobra, Niskie, Dobre
-Niska, B.Dobra, Normalne, Dobre
-Niska, B.Dobra, Normalne, Dobre
-Normalna, Dobra, Normalne, Dobre
-Normalna, Niska, Wysokie, Złe
-Wysoka, B.Dobra, Wysokie, Złe
+name, Temperatura, Hemoglobina, Ciśnienie, Samopoczucie
+1, Niska, Dobra, Niskie, Słabe
+2, Niska, Dobra, Normalne, Słabe
+3, Normalna, B.Dobra, Niskie, Słabe
+4, Normalna, B.Dobra, Niskie, Dobre
+5, Niska, B.Dobra, Normalne, Dobre
+6, Niska, B.Dobra, Normalne, Dobre
+7, Normalna, Dobra, Normalne, Dobre
+8, Normalna, Niska, Wysokie, Złe
+9, Wysoka, B.Dobra, Wysokie, Złe

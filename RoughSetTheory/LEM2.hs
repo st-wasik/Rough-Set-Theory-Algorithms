@@ -6,13 +6,12 @@ module RoughSetTheory.LEM2
 import qualified RoughSetTheory.Variant as Variant
 import RoughSetTheory.Variant (Variant, Condition)
 
-import RoughSetTheory.Rule as Rule
-
-import qualified Data.List as List
-
 import qualified RoughSetTheory.InfoTable as InfoTable
 import RoughSetTheory.InfoTable (InfoTable)
 
+import RoughSetTheory.Rule as Rule
+
+import qualified Data.List as List
 import Distinct
 
 dropUnnecessaryRules :: [Rule] -> [Variant] -> [Rule]

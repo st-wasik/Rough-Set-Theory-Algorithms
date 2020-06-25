@@ -1,15 +1,19 @@
-module RoughSetTheory where
+module RoughSetTheory
+    ( dataExample
+    , approximationExample
+    , lem2Example
+    , reductExample
+    , classifyExample   
+    ) where
 
-import Data.List.Split as Split
-
-import Text.ParserCombinators.Parsec
-import Data.CSV
+import qualified Data.List.Split as Split
+import qualified Data.List as List
 
 import Data.Either
-
 import Data.String.Utils
+import Data.CSV
 
-import qualified Data.List as List
+import Text.ParserCombinators.Parsec
 
 import qualified RoughSetTheory.InfoTable     as InfoTable
 import qualified RoughSetTheory.Variant       as Variant
@@ -30,25 +34,22 @@ file6 = "data/train.csv"
 file7 = "data/flu.csv"
 file8 = "data/wwd11_red.csv"
 file9 = "data/golf.csv"
-mushrooms = "data/mushrooms2.csv"
 
-test0 = "data/test.csv"
 test1 = "data/girls_test.csv"
 test2 = "data/golf_test.csv"
+test3 = "data/test.csv"
 
-trainFile = file9
-testFile  = test2
+trainFile = file1
+testFile  = test1
 
 approxLevel = Approximation.lowerApprox
+-- approxLevel = Approximation.boundary
+-- approxLevel = Approximation.upperApprox
 
--- loadDataFromCsv :: FilePath -> IO (Either ParseError [[String]])
+
+loadDataFromCsv :: FilePath -> IO (Either ParseError [[String]])
 loadDataFromCsv path = fmap (fmap (fmap strip)) <$> parseFromFile csvFile path
 
-readDouble :: String -> Double
-readDouble = read
-
-main :: IO ()
-main = return ()
 
 dataExample :: IO ()
 dataExample = do
