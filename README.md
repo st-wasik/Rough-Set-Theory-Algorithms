@@ -9,12 +9,12 @@ This project contains implementation of basic Rough Set Theory algorithms. Algor
     * *cabal sandbox init*
     * *cabal update*
     * *cabal install --only-dependencies*
-* Or run following commands, if using cabal-install 3.2.0.0 (tested on Ubuntu):
+* Or run following commands, if using cabal-install v3.2.0.0 (tested on Ubuntu):
     * *cabal v1-sandbox init*
     * *cabal update*
     * *cabal install --only-dependencies --lib*
 * *cabal repl*  
-* Then run one from example functions located in RoughSetTheory.hs, e.g.  
+* Then run one of example functions located in RoughSetTheory.hs, e.g.  
     * *lem2Example*
     * *classifyExample*
     * *reductExample*
