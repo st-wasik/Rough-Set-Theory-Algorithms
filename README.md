@@ -14,13 +14,13 @@ This project contains implementatnion of basic Rough Set Theory algorithms. Algo
     * *cabal update*
     * *cabal install --only-dependencies --lib*
 * *cabal repl*  
-* Then run one from example functions located in *RoughSetTheory.hs*, e.g.  
+* Then run one from example functions located in RoughSetTheory.hs, e.g.  
     * *lem2Example*
     * *classifyExample*
     * *reductExample*
     * *approximationExample*
     * *dataExample*
 <br/>
-To change approximation level, train or test files, go to *RoughSetTheory.hs* and change defined variables (*trainFile, testFile, approxLevel*).
+To change approximation level, train or test files, go to *RoughSetTheory.hs* and change defined variables (trainFile, testFile, approxLevel).
 
 ### License - MIT
