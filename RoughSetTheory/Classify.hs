@@ -13,13 +13,15 @@ import Data.Ratio(Ratio)
 import qualified Data.List as List
 
 classify :: [Rule] -> [Condition] -> [String]
-classify rules attribs = if List.null fullyClassified 
+classify rules attribs = if List.null bestResult 
     then classifyNotFullMatch rules attribs
-    else fullyClassified 
+    else bestResult 
     where 
-        fullyClassified = map snd $ foldl f [] rules
+        bestResult = if List.null sortedClassified then [] else [(snd . snd) (head sortedClassified)]
+        sortedClassified = List.sortBy (\a b -> compare (fst b) (fst a)) fullyClassified
+        fullyClassified = foldl f [] rules
         f acc rule = if allIn (Rule.conditions rule) attribs
-            then acc ++ Rule.decision rule
+            then acc ++ fmap ((,) (Rule.support rule)) (Rule.decision rule)
             else acc 
         
 

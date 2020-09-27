@@ -38,7 +38,8 @@ makeRules conds _U = List.foldl' f [] conds
         f acc c = let 
             variants = variantsForConditions c _U
             d = List.nub . map Variant.toDecCondition $ variants
-            in acc ++ [Rule c d]
+            variantsCount = List.length variants
+            in acc ++ [Rule c d variantsCount]
 
 lem2_1st_loop :: [Variant] -> [Variant] -> [Variant] -> [[Condition]] -> [[Condition]]
 lem2_1st_loop _G _X _U rules

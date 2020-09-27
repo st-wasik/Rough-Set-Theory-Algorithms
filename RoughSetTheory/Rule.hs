@@ -6,10 +6,11 @@ data Rule =
     Rule 
         { conditions :: [(String, String)]
         , decision :: [(String, String)]
+        , support :: Int
         } deriving Eq
 
 instance Show Rule where 
-    show rule = "IF " ++ conds ++ " THEN " ++ dec 
+    show rule = "IF " ++ conds ++ " THEN " ++ dec ++ " (support: " ++ show (support rule) ++ ")"
         where 
             conds = intercalate " AND " $ foldl _concat [] $ conditions rule
             dec = intercalate " OR " $ foldl _concat [] $ decision rule
