@@ -1,6 +1,6 @@
 # Rough Set Theory Algorithms - University project
 
-This project contains implementatnion of basic Rough Set Theory algorithms. Algorithms are implemented in Haskell.
+This project contains implementation of basic Rough Set Theory algorithms. Algorithms are implemented in Haskell.
 
 ### How to run
 * Install Haskell Platform (from haskell.org).  
@@ -21,6 +21,6 @@ This project contains implementatnion of basic Rough Set Theory algorithms. Algo
     * *approximationExample*
     * *dataExample*
 <br/>
-To change approximation level, train or test files, go to *RoughSetTheory.hs* and change defined variables (trainFile, testFile, approxLevel).
+To change approximation level, train or test files, go to RoughSetTheory.hs and change following variables definition: trainFile, testFile, approxLevel.
 
 ### License - MIT
